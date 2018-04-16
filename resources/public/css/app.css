@@ -1,0 +1,49 @@
+body {
+  color: #333;
+  padding: 10px 20px;
+  font-family: sans-serif;
+}
+
+h1 {
+  margin-bottom: 1.2em;
+}
+
+.todo-list {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 2em;
+  display: inline-block;
+}
+
+.todo-item {
+  padding: 0.5em 0;
+  user-select: none;
+  -moz-user-select: none;
+}
+
+.todo-item--complete {
+  text-decoration: line-through;
+}
+
+.complete-todo-checkbox {
+  margin-right: 0.7em;
+  cursor: pointer;
+}
+
+.new-todo-input {
+  margin-right: 0.6em;
+  margin-top: 1em;
+}
+
+.remove-todo-button {
+  font-size: 0.8em;
+  padding: 0;
+  margin-left: 2em;
+  cursor: pointer;
+  float: right;
+}
+
+.creation-time {
+  font-size: 0.6em;
+  color: #666;
+}
