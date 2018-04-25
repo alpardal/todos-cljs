@@ -1,26 +1,22 @@
-# todos
+# TODOs
 
-A [re-frame](https://github.com/Day8/re-frame) application designed to ... well, that part is up to you.
+Exemplo simples de TODOs em ClojureScript usando [re-frame](https://github.com/Day8/re-frame).
 
-## Development Mode
+## Dependências
 
-### Run application:
+Java 8+ e [Leiningen](https://leiningen.org/).
 
+## Rodando
+
+```sh
+lein figwheel
 ```
-lein clean
-lein figwheel dev
-```
 
-Figwheel will automatically push cljs changes to the browser.
+E acesse: [http://localhost:3449](http://localhost:3449).
 
-Wait a bit, then browse to [http://localhost:3449](http://localhost:3449).
+Para acessar o namespace de eventos (como `e`) e o `default-db` no repl:
 
-## Production Build
-
-
-To compile clojurescript to javascript:
-
-```
-lein clean
-lein cljsbuild once min
+```clojure
+  (require '[todos.events :as e])
+  (use '[todos.db :only (default-db)])
 ```
