@@ -11,3 +11,8 @@
 (reg-sub
   ::new-todo-text
   #(get-in % [:new-todo-form :text]))
+
+(reg-sub
+  ::valid?
+  #(subscribe [::new-todo-text])  ;; `::valid?` depende do texto do todo novo
+  (comp not empty?))              ;; só é válido quando o texto não estiver em branco

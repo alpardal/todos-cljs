@@ -18,12 +18,13 @@
     [:ul.todo-list (map render-todo todos)]))
 
 (defn new-todo-form []
-  [:form {:on-submit (preventing-default #(dispatch [::events/add-new-todo]))}
-   [:input.new-todo-input
-    {:placeholder "enter a new item..."
-     :value @(subscribe [::subs/new-todo-text])
-     :on-change #(dispatch [::events/edit-new-todo (value-from-event %)])}]
-   [:button "Add"]])
+  (let [disabled? (not @(subscribe [::subs/valid?]))]
+    [:form {:on-submit (preventing-default #(dispatch [::events/add-new-todo]))}
+     [:input.new-todo-input
+      {:placeholder "enter a new item..."
+       :value @(subscribe [::subs/new-todo-text])
+       :on-change #(dispatch [::events/edit-new-todo (value-from-event %)])}]
+     [:button {:disabled disabled?} "Add"]]))
 
 (defn main-panel []
   [:div
