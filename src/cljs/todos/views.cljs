@@ -4,11 +4,14 @@
             [todos.events :as events]
             [todos.utils :refer [value-from-event preventing-default]]))
 
-(defn render-todo [{:keys [id text]}]
-  (let [dom-id (str "todo-" id)]
+(defn render-todo [{:keys [id text complete?]}]
+  (let [dom-id (str "todo-" id)
+        label-class (when complete? "todo-item--complete")]
     [:li.todo-item {:key id}
-     [:input.complete-todo-checkbox {:type "checkbox" :id dom-id}]
-     [:label {:for dom-id} text]
+     [:input.complete-todo-checkbox
+      {:type "checkbox" :id dom-id :checked complete?
+       :on-change #(dispatch [::events/toggle-todo id])}]
+     [:label {:for dom-id :class label-class} text]
      [:button.remove-todo-button
       {:on-click #(dispatch [::events/remove-todo id])}
       "x"]]))

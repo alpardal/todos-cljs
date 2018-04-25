@@ -27,8 +27,12 @@
     (update :todos #(dissoc % id))                          ;; remove todo
     (update :todo-list #(vec (remove (partial = id) %)))))  ;; remove id da lista
 
+(defn-traced toggle-todo [db [_ id]]
+  (update-in db [:todos id :complete?] not))
+
 (reg-event-db ::initialize-db
  (fn-traced [_ _] db/default-db))
 (reg-event-db ::edit-new-todo edit-new-todo)
 (reg-event-db ::add-new-todo add-new-todo)
 (reg-event-db ::remove-todo remove-todo)
+(reg-event-db ::toggle-todo toggle-todo)
