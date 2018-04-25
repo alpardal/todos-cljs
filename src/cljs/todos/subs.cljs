@@ -3,6 +3,7 @@
 
 
 (reg-sub
- ::name
+ ::todos
  (fn [db]
-   (:name db)))
+   (let [todo-by-id #(get-in db [:todos %])]
+     (map todo-by-id (:todo-list db)))))
