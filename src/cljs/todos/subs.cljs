@@ -7,3 +7,7 @@
  (fn [db]
    (let [todo-by-id #(get-in db [:todos %])]
      (map todo-by-id (:todo-list db)))))
+
+(reg-sub
+  ::new-todo-text
+  #(get-in % [:new-todo-form :text]))
