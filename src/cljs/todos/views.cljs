@@ -4,7 +4,11 @@
             [todos.events :as events]
             [todos.utils :refer [value-from-event preventing-default]]))
 
-(defn render-todo [{:keys [id text complete?]}]
+(defn formatted-creation-date [date]
+  (let [format-msg #(str " (created @ " % ")")]
+    (some-> date (.toLocaleString) (format-msg))))
+
+(defn render-todo [{:keys [id text complete? created-at]}]
   (let [dom-id (str "todo-" id)
         label-class (when complete? "todo-item--complete")
         remove-confirm-msg (str "Remove '" text "'?")]
@@ -12,7 +16,9 @@
      [:input.complete-todo-checkbox
       {:type "checkbox" :id dom-id :checked complete?
        :on-change #(dispatch [::events/toggle-todo id])}]
-     [:label {:for dom-id :class label-class} text]
+     [:label {:for dom-id :class label-class}
+             text
+             [:span.creation-time (formatted-creation-date created-at)]]
      [:button.remove-todo-button
       {:on-click #(dispatch [::events/remove-todo id remove-confirm-msg])}
       "x"]]))
