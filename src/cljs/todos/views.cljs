@@ -29,8 +29,16 @@
        :on-change #(dispatch [::events/edit-new-todo (value-from-event %)])}]
      [:button {:disabled disabled?} "Add"]]))
 
+(defn todos-left-notice []
+  (let [count @(subscribe [::subs/todos-left-count])
+        inflected (if (= 1 count) "item" "items")
+        text (if (zero? count) (str "No " inflected " left :)")
+                               (str count " " inflected " left"))]
+    [:div.todos-left-notice text]))
+
 (defn main-panel []
   [:div
    [:h1 "TODOs"]
    [todo-list]
+   [todos-left-notice]
    [new-todo-form]])

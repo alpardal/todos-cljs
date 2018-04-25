@@ -16,3 +16,12 @@
   ::valid?
   #(subscribe [::new-todo-text])  ;; `::valid?` depende do texto do todo novo
   (comp not empty?))              ;; só é válido quando o texto não estiver em branco
+
+(reg-sub
+  ::active-todos
+  #(remove :complete? (vals (:todos %))))
+
+(reg-sub
+  ::todos-left-count
+  #(subscribe [::active-todos])
+  count)
