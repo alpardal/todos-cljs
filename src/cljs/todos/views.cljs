@@ -9,7 +9,9 @@
     [:li.todo-item {:key id}
      [:input.complete-todo-checkbox {:type "checkbox" :id dom-id}]
      [:label {:for dom-id} text]
-     [:button.remove-todo-button "x"]]))
+     [:button.remove-todo-button
+      {:on-click #(dispatch [::events/remove-todo id])}
+      "x"]]))
 
 (defn todo-list []
   (let [todos @(subscribe [::subs/todos])]

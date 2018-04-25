@@ -22,7 +22,13 @@
       (update :todo-list #(conj % id))          ;; adiciona id do novo todo à lista de ids
       (assoc-in [:new-todo-form :text] ""))))   ;; limpa form
 
+(defn-traced remove-todo [db [_ id]]
+  (-> db
+    (update :todos #(dissoc % id))                          ;; remove todo
+    (update :todo-list #(vec (remove (partial = id) %)))))  ;; remove id da lista
+
 (reg-event-db ::initialize-db
  (fn-traced [_ _] db/default-db))
 (reg-event-db ::edit-new-todo edit-new-todo)
 (reg-event-db ::add-new-todo add-new-todo)
+(reg-event-db ::remove-todo remove-todo)
