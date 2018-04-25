@@ -6,14 +6,15 @@
 
 (defn render-todo [{:keys [id text complete?]}]
   (let [dom-id (str "todo-" id)
-        label-class (when complete? "todo-item--complete")]
+        label-class (when complete? "todo-item--complete")
+        remove-confirm-msg (str "Remove '" text "'?")]
     [:li.todo-item {:key id}
      [:input.complete-todo-checkbox
       {:type "checkbox" :id dom-id :checked complete?
        :on-change #(dispatch [::events/toggle-todo id])}]
      [:label {:for dom-id :class label-class} text]
      [:button.remove-todo-button
-      {:on-click #(dispatch [::events/remove-todo id])}
+      {:on-click #(dispatch [::events/remove-todo id remove-confirm-msg])}
       "x"]]))
 
 (defn todo-list []

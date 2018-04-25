@@ -22,7 +22,11 @@
       (update :todo-list #(conj % id))          ;; adiciona id do novo todo à lista de ids
       (assoc-in [:new-todo-form :text] ""))))   ;; limpa form
 
-(defn-traced remove-todo [db [_ id]]
+(defn remove-todo [_ [_ id msg]]
+  {::with-confirmation
+   {:msg msg :on-confirm [::remove-todo-without-confirmation id]}})
+
+(defn-traced remove-todo-without-confirmation [db [_ id]]
   (-> db
     (update :todos #(dissoc % id))                          ;; remove todo
     (update :todo-list #(vec (remove (partial = id) %)))))  ;; remove id da lista
@@ -30,9 +34,14 @@
 (defn-traced toggle-todo [db [_ id]]
   (update-in db [:todos id :complete?] not))
 
+(reg-fx ::with-confirmation
+  (fn [{:keys [msg on-confirm]}]
+    (when (.confirm js/window msg) (dispatch on-confirm))))
+
 (reg-event-db ::initialize-db
  (fn-traced [_ _] db/default-db))
 (reg-event-db ::edit-new-todo edit-new-todo)
 (reg-event-db ::add-new-todo add-new-todo)
-(reg-event-db ::remove-todo remove-todo)
+(reg-event-fx ::remove-todo remove-todo)
+(reg-event-db ::remove-todo-without-confirmation remove-todo-without-confirmation)
 (reg-event-db ::toggle-todo toggle-todo)
