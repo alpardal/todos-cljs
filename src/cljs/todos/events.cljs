@@ -16,7 +16,7 @@
 (defn-traced add-new-todo [{:keys [db now]} _]
   (let [id (next-id db)
         text (get-in db [:new-todo-form :text])
-        new-todo {:id id :text text :created-at now}]
+        new-todo {:id id :text text :created-at now :complete? false}]
     {:db (-> db
           (assoc-in [:todos id] new-todo)            ;; adiciona todo novo
           (update :todo-list #(conj % id))           ;; adiciona id do novo todo à lista de ids
